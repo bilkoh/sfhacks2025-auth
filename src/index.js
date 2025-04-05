@@ -14,7 +14,7 @@ export default {
 
 		if (url.pathname === '/login') {
 			// Use environment variables for the GitHub Client ID
-			const clientId = env.GITHUB_CLIENT_ID;
+			const clientId = env.GITHUB_CLIENT_SECRET;
 			const domain = 'sfhacks2025-auth.bilk0h.workers.dev';
 			const redirectUri = encodeURIComponent('https://' + domain + '/callback');
 			const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
