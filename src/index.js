@@ -7,14 +7,14 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+const clientId = env.GITHUB_CLIENT_ID;
+const clientSecret = env.GITHUB_CLIENT_SECRET;
 
 export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
 
 		if (url.pathname === '/login') {
-			// Use environment variables for the GitHub Client ID
-			const clientId = env.GITHUB_CLIENT_SECRET;
 			const domain = 'sfhacks2025-auth.bilk0h.workers.dev';
 			const redirectUri = encodeURIComponent('https://' + domain + '/callback');
 			const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
@@ -31,8 +31,8 @@ export default {
 					Accept: 'application/json',
 				},
 				body: JSON.stringify({
-					client_id: env.GITHUB_CLIENT_ID,
-					client_secret: env.GITHUB_CLIENT_SECRET,
+					client_id: clientId,
+					client_secret: clientSecret,
 					code: code,
 				}),
 			});
