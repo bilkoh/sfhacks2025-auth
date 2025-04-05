@@ -89,6 +89,19 @@ export default {
 			const userResponse = await fetch('https://api.github.com/user', {
 				headers: { Authorization: `token ${tokenData.access_token}` },
 			});
+
+			// return debug info for userResponse
+			return new Response(`${JSON.stringify(userResponse)} ${clientId} ${clientSecret}`, {
+				status: userResponse.status,
+				headers: {
+					'Content-Type': 'application/json',
+					// Add CORS headers to allow your Pages domain to access this API
+					'Access-Control-Allow-Origin': '*', // In production, specify your actual domain
+					'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+					'Access-Control-Allow-Headers': 'Content-Type',
+				},
+			});
+
 			const userData = await userResponse.json();
 
 			// Here, you would create a session or further process userData as needed
