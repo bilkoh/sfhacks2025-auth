@@ -87,7 +87,7 @@ export default {
 
 			// Use the access token to retrieve user information from GitHub
 			const userResponse = await fetch('https://api.github.com/user', {
-				headers: { Authorization: `token ${tokenData.access_token}` },
+				headers: { Authorization: `Bearer ${tokenData.access_token}` },
 			});
 
 			// return debug info for userResponse
