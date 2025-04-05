@@ -7,12 +7,12 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
-const clientId = env.GITHUB_CLIENT_ID;
-const clientSecret = env.GITHUB_CLIENT_SECRET;
 
 export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
+		const clientId = env.GITHUB_CLIENT_ID;
+		const clientSecret = env.GITHUB_CLIENT_SECRET;
 
 		if (url.pathname === '/login') {
 			const domain = 'sfhacks2025-auth.bilk0h.workers.dev';
