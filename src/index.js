@@ -37,52 +37,8 @@ export default {
 				}),
 			});
 
-			// const tokenData = await tokenResponse.json();
-			// Add robust error handling
-			if (!tokenResponse.ok) {
-				const errorText = await tokenResponse.text();
-				return new Response(`GitHub API error: ${errorText.substring(0, 500)}`, {
-					status: tokenResponse.status,
-					headers: { 'Content-Type': 'text/plain' },
-				});
-			}
-
-			let tokenData;
-			try {
-				const text = await tokenResponse.text();
-				try {
-					tokenData = JSON.parse(text);
-				} catch (e) {
-					return new Response(`Failed to parse GitHub response: ${text.substring(0, 200)}...`, {
-						status: 500,
-						headers: { 'Content-Type': 'text/plain' },
-					});
-				}
-			} catch (e) {
-				return new Response(`Error processing GitHub response: ${e.message}`, {
-					status: 500,
-					headers: { 'Content-Type': 'text/plain' },
-				});
-			}
-
-			// Check if we have an access token
-			if (!tokenData.access_token) {
-				return new Response(`GitHub did not provide access token: ${JSON.stringify(tokenData)}`, {
-					status: 400,
-					headers: { 'Content-Type': 'text/plain' },
-				});
-			}
-
-			// Use the access token to retrieve user information from GitHub
-			const userResponse = await fetch('https://api.github.com/user', {
-				headers: { Authorization: `token ${tokenData.access_token}` },
-			});
-			const userData = await userResponse.json();
-
-			// Here, you would create a session or further process userData as needed
-			// return new Response(`Hello, ${userData.login}!`, { status: 200 });
-			return new Response(JSON.stringify(userData), {
-				status: 200,
+			return new Response(`${JSON.stringify(tokenResponse)}`, {
+				status: tokenResponse.status,
 				headers: {
 					'Content-Type': 'application/json',
 					// Add CORS headers to allow your Pages domain to access this API
@@ -91,6 +47,61 @@ export default {
 					'Access-Control-Allow-Headers': 'Content-Type',
 				},
 			});
+
+			// // const tokenData = await tokenResponse.json();
+			// // Add robust error handling
+			// if (!tokenResponse.ok) {
+			// 	const errorText = await tokenResponse.text();
+			// 	return new Response(`GitHub API error: ${errorText.substring(0, 500)}`, {
+			// 		status: tokenResponse.status,
+			// 		headers: { 'Content-Type': 'text/plain' },
+			// 	});
+			// }
+
+			// let tokenData;
+			// try {
+			// 	const text = await tokenResponse.text();
+			// 	try {
+			// 		tokenData = JSON.parse(text);
+			// 	} catch (e) {
+			// 		return new Response(`Failed to parse GitHub response: ${text.substring(0, 200)}...`, {
+			// 			status: 500,
+			// 			headers: { 'Content-Type': 'text/plain' },
+			// 		});
+			// 	}
+			// } catch (e) {
+			// 	return new Response(`Error processing GitHub response: ${e.message}`, {
+			// 		status: 500,
+			// 		headers: { 'Content-Type': 'text/plain' },
+			// 	});
+			// }
+
+			// // Check if we have an access token
+			// if (!tokenData.access_token) {
+			// 	return new Response(`GitHub did not provide access token: ${JSON.stringify(tokenData)}`, {
+			// 		status: 400,
+			// 		headers: { 'Content-Type': 'text/plain' },
+			// 	});
+			// }
+
+			// // Use the access token to retrieve user information from GitHub
+			// const userResponse = await fetch('https://api.github.com/user', {
+			// 	headers: { Authorization: `token ${tokenData.access_token}` },
+			// });
+			// const userData = await userResponse.json();
+
+			// // Here, you would create a session or further process userData as needed
+			// // return new Response(`Hello, ${userData.login}!`, { status: 200 });
+			// return new Response(JSON.stringify(userData), {
+			// 	status: 200,
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+			// 		// Add CORS headers to allow your Pages domain to access this API
+			// 		'Access-Control-Allow-Origin': '*', // In production, specify your actual domain
+			// 		'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+			// 		'Access-Control-Allow-Headers': 'Content-Type',
+			// 	},
+			// });
 		}
 
 		return new Response('Welcome to your site!', { status: 200 });
