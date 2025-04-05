@@ -46,7 +46,17 @@ export default {
 			const userData = await userResponse.json();
 
 			// Here, you would create a session or further process userData as needed
-			return new Response(`Hello, ${userData.login}!`, { status: 200 });
+			// return new Response(`Hello, ${userData.login}!`, { status: 200 });
+			return new Response(JSON.stringify(userData), {
+				status: 200,
+				headers: {
+					'Content-Type': 'application/json',
+					// Add CORS headers to allow your Pages domain to access this API
+					'Access-Control-Allow-Origin': '*', // In production, specify your actual domain
+					'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+					'Access-Control-Allow-Headers': 'Content-Type',
+				},
+			});
 		}
 
 		return new Response('Welcome to your site!', { status: 200 });
