@@ -87,8 +87,21 @@ export default {
 
 			// Use the access token to retrieve user information from GitHub
 			const userResponse = await fetch('https://api.github.com/user', {
-				headers: { Authorization: `Bearer ${tokenData.access_token}`, Accept: 'application/json' },
+				headers: {
+					Authorization: `Bearer ${tokenData.access_token}`,
+					Accept: 'application/json',
+					'User-Agent': 'SFHacks2025-Auth-App', // GitHub requires a user-agent
+				},
 			});
+
+			// Check if the user API request was successful
+			if (!userResponse.ok) {
+				const errorText = await userResponse.text();
+				return new Response(`GitHub API error: ${errorText.substring(0, 500)}`, {
+					status: userResponse.status,
+					headers: { 'Content-Type': 'text/plain' },
+				});
+			}
 
 			const resposneHtml = `
 			<div>
