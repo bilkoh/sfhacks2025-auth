@@ -90,8 +90,17 @@ export default {
 				headers: { Authorization: `Bearer ${tokenData.access_token}` },
 			});
 
+			const resposneHtml = `
+			<div>
+				<h1>GitHub User Info</h1>
+				<p>Client ID: ${clientId}</p>
+				<p>Client Secret: ${clientSecret}</p>
+				<p>Access Token: ${JSON.stringify(tokenData)}</p>
+				<p>User Response: ${JSON.stringify(userResponse)}</p>
+			</div>`;
+
 			// return debug info for userResponse
-			return new Response(`${JSON.stringify(userResponse)} ${clientId} ${clientSecret}`, {
+			return new Response(resposneHtml, {
 				status: userResponse.status,
 				headers: {
 					'Content-Type': 'application/json',
