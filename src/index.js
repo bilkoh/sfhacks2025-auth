@@ -36,8 +36,9 @@ export default {
 					code: code,
 				}),
 			});
+			const tokenData = await tokenResponse.json();
 
-			return new Response(`${JSON.stringify(tokenResponse)}`, {
+			return new Response(`${JSON.stringify(tokenData)} ${clientId} ${clientSecret}`, {
 				status: tokenResponse.status,
 				headers: {
 					'Content-Type': 'application/json',
