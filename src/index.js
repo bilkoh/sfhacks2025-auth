@@ -37,7 +37,29 @@ export default {
 				}),
 			});
 
-			const tokenData = await tokenResponse.json();
+			// const tokenData = await tokenResponse.json();
+			// Add error handling
+			let tokenData;
+			try {
+				const text = await tokenResponse.text();
+				try {
+					tokenData = JSON.parse(text);
+				} catch (e) {
+					return new Response(`Failed to parse response: ${text.substring(0, 200)}...`, {
+						status: 500,
+						headers: { 'Content-Type': 'text/plain' },
+					});
+				}
+
+				if (!tokenData.access_token) {
+					return new Response(`Auth error: ${JSON.stringify(tokenData)}`, {
+						status: 400,
+						headers: { 'Content-Type': 'text/plain' },
+					});
+				}
+			} catch (e) {
+				return new Response(`Error: ${e.message}`, { status: 500 });
+			}
 
 			// Use the access token to retrieve user information from GitHub
 			const userResponse = await fetch('https://api.github.com/user', {
